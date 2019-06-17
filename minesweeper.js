@@ -19,35 +19,21 @@ export default class Minesweeper {
       board.push(newRow)
     }
 
-    this.mines.forEach((mine)=> {
-      let [col, row] = mine
+    this.mines.forEach(([col, row])=> {
       col--
       row--
 
-      if (board[row-1] && board[row-1][col-1]) {
-        board[row-1][col-1].addBombCount()
-      }
-      if(board[row-1] && board[row-1][col]){
-        board[row-1][col].addBombCount()
-      }
-      if(board[row-1] && board[row-1][col+1]){
-        board[row-1][col+1].addBombCount()
-      }
-      if(board[row] && board[row][col-1]){
-        board[row][col-1].addBombCount()
-      }
-      if(board[row] && board[row][col+1]){
-        board[row][col+1].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col-1]) {
-        board[row+1][col-1].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col]) {
-        board[row+1][col].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col+1]) {
-        board[row+1][col+1].addBombCount()
-      }
+      let neighbours = [
+        [col-1, row-1], [col, row-1], [col+1, row-1],
+        [col-1, row],                 [col+1, row],
+        [col-1, row+1], [col, row+1], [col+1, row+1]
+      ]
+
+      neighbours.map(([col, row]) => {
+        if (this.isCellInBound(board, col, row)) {
+          board[row][col].addBombCount()
+        }
+      })
     })
 
     return board
@@ -88,6 +74,10 @@ export default class Minesweeper {
     if(foundIndex> -1){
       cell.hasBomb = true
     }
+  }
+
+  isCellInBound(board, col, row) {
+    return board[row] && board[row][col]
   }
 
   setMines(mines) {
