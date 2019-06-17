@@ -21,3 +21,13 @@ test('cell display', () => {
   expect(mineCell.displayChar()).toEqual('*')
   expect(surroundedCell.displayChar()).toEqual('2')
 })
+
+test('setBombStatus', () => {
+  const cell = new Cell(0, 0, false)
+
+  cell.setMineStatus(true)
+  expect(cell.hasBomb).toBe(true)
+
+  cell.setMineStatus(false)
+  expect(cell.hasBomb).toBe(false)
+})

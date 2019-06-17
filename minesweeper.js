@@ -7,21 +7,17 @@ export default class Minesweeper {
   }
 
   buildBoard() {
-    let board = []
-
-    for(let i=1; i<=this.rows; i++){
-      let newRow = []
-      for(let j=1; j<=this.cols; j++){
-        const newCell = new Cell(j, i)
-        this.setCellBombStatus(newCell)
-        newRow.push(newCell)
-      }
-      board.push(newRow)
-    }
+    let board = this.emptyBoardOf(this.cols, this.rows)
 
     this.mines.forEach(([col, row])=> {
       col--
       row--
+
+      if (!this.isCellInBound(board, col, row)) {
+        return
+      }
+
+      board[row][col].setMineStatus(true)
 
       let neighbours = [
         [col-1, row-1], [col, row-1], [col+1, row-1],
@@ -59,19 +55,23 @@ export default class Minesweeper {
     return boardStr
   }
 
-  setCellBombStatus(cell) {
-    const foundIndex = this.mines.findIndex(mine=>{
-      const [col, row] = mine
-      return (cell.col === col && cell.row === row)
-    })
-
-    if(foundIndex> -1){
-      cell.hasBomb = true
-    }
-  }
-
   isCellInBound(board, col, row) {
     return board[row] && board[row][col]
+  }
+
+  emptyBoardOf(cols, rows) {
+    let board = []
+
+    for(let i=1; i<=rows; i++){
+      let newRow = []
+      for(let j=1; j<=cols; j++){
+        const newCell = new Cell(j, i)
+        newRow.push(newCell)
+      }
+      board.push(newRow)
+    }
+
+    return board
   }
 
   setMines(mines) {

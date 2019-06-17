@@ -10,6 +10,10 @@ export default class Cell {
     this.surroundingBombs++
   }
 
+  setMineStatus(newStatus) {
+    this.hasBomb = newStatus
+  }
+
   displayChar() {
     if (this.hasBomb) {
       return '*'
