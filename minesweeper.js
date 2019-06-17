@@ -47,12 +47,10 @@ export default class Minesweeper {
       row.forEach((cell) => {
         boardStr += cell.displayChar()
       })
-      if (index < (this.rows-1)) {
-        boardStr += "\n"
-      }
+      boardStr += "\n"
     })
 
-    return boardStr
+    return boardStr.trim()
   }
 
   isCellInBound(board, col, row) {
