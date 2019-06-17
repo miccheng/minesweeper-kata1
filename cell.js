@@ -9,4 +9,18 @@ export default class Cell {
   addBombCount() {
     this.surroundingBombs++
   }
+
+  setMineStatus(newStatus) {
+    this.hasBomb = newStatus
+  }
+
+  displayChar() {
+    if (this.hasBomb) {
+      return '*'
+    } else if (this.surroundingBombs > 0) {
+      return `${this.surroundingBombs}`
+    } else {
+      return '.'
+    }
+  }
 }

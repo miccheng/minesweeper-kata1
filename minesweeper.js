@@ -7,47 +7,29 @@ export default class Minesweeper {
   }
 
   buildBoard() {
-    let board = []
+    let board = this.emptyBoardOf(this.cols, this.rows)
 
-    for(let i=1; i<=this.rows; i++){
-      let newRow = []
-      for(let j=1; j<=this.cols; j++){
-        const newCell = new Cell(j, i)
-        this.setCellBombStatus(newCell)
-        newRow.push(newCell)
-      }
-      board.push(newRow)
-    }
-
-    this.mines.forEach((mine)=> {
-      let [col, row] = mine
+    this.mines.forEach(([col, row])=> {
       col--
       row--
 
-      if (board[row-1] && board[row-1][col-1]) {
-        board[row-1][col-1].addBombCount()
+      if (!this.isCellInBound(board, col, row)) {
+        return
       }
-      if(board[row-1] && board[row-1][col]){
-        board[row-1][col].addBombCount()
-      }
-      if(board[row-1] && board[row-1][col+1]){
-        board[row-1][col+1].addBombCount()
-      }
-      if(board[row] && board[row][col-1]){
-        board[row][col-1].addBombCount()
-      }
-      if(board[row] && board[row][col+1]){
-        board[row][col+1].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col-1]) {
-        board[row+1][col-1].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col]) {
-        board[row+1][col].addBombCount()
-      }
-      if (board[row+1] && board[row+1][col+1]) {
-        board[row+1][col+1].addBombCount()
-      }
+
+      board[row][col].setMineStatus(true)
+
+      let neighbours = [
+        [col-1, row-1], [col, row-1], [col+1, row-1],
+        [col-1, row],                 [col+1, row],
+        [col-1, row+1], [col, row+1], [col+1, row+1]
+      ]
+
+      neighbours.filter(([col, row]) => {
+        return this.isCellInBound(board, col, row)
+      }).forEach(([col, row]) => {
+        board[row][col].addBombCount()
+      })
     })
 
     return board
@@ -61,33 +43,33 @@ export default class Minesweeper {
     const board = this.buildBoard()
 
     let boardStr = ''
-    board.forEach((row, index) => {
+    board.forEach((row) => {
       row.forEach((cell) => {
-        if (cell.hasBomb) {
-          boardStr += '*'
-        } else if (cell.surroundingBombs > 0) {
-          boardStr += `${cell.surroundingBombs}`
-        } else {
-          boardStr += '.'
-        }
+        boardStr += cell.displayChar()
       })
-      if (index < (this.rows-1)) {
-        boardStr += "\n"
-      }
+      boardStr += "\n"
     })
 
-    return boardStr
+    return boardStr.trim()
   }
 
-  setCellBombStatus(cell) {
-    const foundIndex = this.mines.findIndex(mine=>{
-      const [col, row] = mine
-      return (cell.col === col && cell.row === row)
-    })
+  isCellInBound(board, col, row) {
+    return board[row] && board[row][col]
+  }
 
-    if(foundIndex> -1){
-      cell.hasBomb = true
+  emptyBoardOf(cols, rows) {
+    let board = []
+
+    for(let i=1; i<=rows; i++){
+      let newRow = []
+      for(let j=1; j<=cols; j++){
+        const newCell = new Cell(j, i)
+        newRow.push(newCell)
+      }
+      board.push(newRow)
     }
+
+    return board
   }
 
   setMines(mines) {
