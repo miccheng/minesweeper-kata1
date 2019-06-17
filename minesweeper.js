@@ -43,7 +43,7 @@ export default class Minesweeper {
     const board = this.buildBoard()
 
     let boardStr = ''
-    board.forEach((row, index) => {
+    board.forEach((row) => {
       row.forEach((cell) => {
         boardStr += cell.displayChar()
       })
