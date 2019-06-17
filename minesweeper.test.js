@@ -29,3 +29,29 @@ test('return board with mines for grid of 3*2', ()=>{
 
   expect(game.showBoard()).toBe("1*1\n111")
 })
+
+test('return board with mines for grid of 5*3', ()=>{
+  const cols = 5
+  const rows = 3
+  const game = new Minesweeper(cols, rows)
+
+  const mineCoordinates = [
+    [1, 1], [2, 1], [2, 3]
+  ]
+  game.setMines(mineCoordinates)
+
+  expect(game.showBoard()).toBe("**1..\n332..\n1*1..")
+})
+
+test('return board with mines for grid of 12*6', ()=>{
+  const cols = 12
+  const rows = 6
+  const game = new Minesweeper(cols, rows)
+
+  const mineCoordinates = [
+    [5, 4]
+  ]
+  game.setMines(mineCoordinates)
+
+  expect(game.showBoard()).toBe("............\n............\n...111......\n...1*1......\n...111......\n............")
+})
