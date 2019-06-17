@@ -25,10 +25,10 @@ export default class Minesweeper {
         [col-1, row+1], [col, row+1], [col+1, row+1]
       ]
 
-      neighbours.map(([col, row]) => {
-        if (this.isCellInBound(board, col, row)) {
-          board[row][col].addBombCount()
-        }
+      neighbours.filter(([col, row]) => {
+        return this.isCellInBound(board, col, row)
+      }).forEach(([col, row]) => {
+        board[row][col].addBombCount()
       })
     })
 
