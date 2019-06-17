@@ -8,7 +8,7 @@ test('Empty response for 0, 0', () => {
   expect(game.showBoard()).toBe(null)
 })
 
-test('Empty response for 4, 3', () => {
+test('Blank response for 4, 3', () => {
   const cols = 4
   const rows = 3
   const game = new Minesweeper(cols, rows)
@@ -28,5 +28,4 @@ test('return board with mines for grid of 3*2', ()=>{
   game.setMines(mineCoordinates)
 
   expect(game.showBoard()).toBe("1*1\n111")
-
 })

@@ -49,13 +49,7 @@ export default class Minesweeper {
     let boardStr = ''
     board.forEach((row, index) => {
       row.forEach((cell) => {
-        if (cell.hasBomb) {
-          boardStr += '*'
-        } else if (cell.surroundingBombs > 0) {
-          boardStr += `${cell.surroundingBombs}`
-        } else {
-          boardStr += '.'
-        }
+        boardStr += cell.displayChar()
       })
       if (index < (this.rows-1)) {
         boardStr += "\n"
